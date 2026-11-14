@@ -63,7 +63,7 @@ layout: default
   <section>
     <h2>Now</h2>
     <div class="grid two">
-      <div class="card"><h3>Building</h3><p>A daily price pipeline: Airflow 3, a Parquet lake partitioned by date, data quality gates and alerts. Next: dbt models and spike detection.</p></div>
+      <div class="card"><h3>Building</h3><p>An analytics agent on top of my price pipeline: Slack bot, dbt docs as context, guarded SQL and evals in CI. The pipeline itself runs daily on Airflow 3 with dbt tests and spike alerts.</p></div>
       <div class="card"><h3>Writing</h3>{% for post in site.posts limit:2 %}<p><a href="{{ post.url | relative_url }}">{{ post.title }}</a></p>{% endfor %}<p><a href="{{ '/blog/' | relative_url }}">All posts →</a></p></div>
     </div>
   </section>
@@ -107,6 +107,12 @@ layout: default
   <section id="projects">
     <h2>Projects</h2>
     <div class="grid">
+      <div class="card proj">
+        <h3>Ask the pipeline: LLM analytics agent</h3>
+        <p>A Slack bot that answers questions about the price warehouse. It reads the dbt docs as its context layer, runs guarded read-only SQL, shows the SQL it actually ran, and resists prompt injection hidden in the data. 8/8 evals in CI.</p>
+        <div class="tags"><span class="tag">LLM agents</span><span class="tag">Slack</span><span class="tag">Evals</span><span class="tag">DuckDB</span></div>
+        <a class="more" href="https://github.com/leo-data-gig-world/ask-the-pipeline">View code →</a>
+      </div>
       <div class="card proj">
         <h3>Pokémon card price pipeline</h3>
         <p>A real daily pipeline: Airflow 3 DAG with retries and alerts, a date-partitioned Parquet lake, data quality gates, and CI/CD on GitHub Actions. It feeds the live section above.</p>
