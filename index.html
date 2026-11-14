@@ -30,6 +30,20 @@ layout: default
     <h2>Live from my pipeline</h2>
     <p class="muted">Every morning an Airflow DAG pulls ~2,000 Pokémon card prices, checks the data and publishes this summary.
       <a href="https://github.com/leo-data-gig-world/pokemon-price-pipeline">See the code →</a></p>
+    <div class="diagram" role="img" aria-label="Pipeline: TCGdex API to Airflow DAG to quality gate to dbt on DuckDB to this page, with a Parquet lake partitioned by date">
+      <svg viewBox="0 0 870 132" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="d-arrowhead"/></marker></defs>
+        <g class="d-box"><rect x="0" y="10" width="150" height="62" rx="10"/><text x="75" y="37" class="d-t">TCGdex API</text><text x="75" y="56" class="d-s">Cardmarket + TCGplayer</text></g>
+        <g class="d-box d-key"><rect x="180" y="10" width="150" height="62" rx="10"/><text x="255" y="37" class="d-t">Airflow DAG</text><text x="255" y="56" class="d-s">daily, retries, alerts</text></g>
+        <g class="d-box d-key"><rect x="360" y="10" width="150" height="62" rx="10"/><text x="435" y="37" class="d-t">Quality gate</text><text x="435" y="56" class="d-s">rows, nulls, freshness</text></g>
+        <g class="d-box d-key"><rect x="540" y="10" width="150" height="62" rx="10"/><text x="615" y="37" class="d-t">dbt on DuckDB</text><text x="615" y="56" class="d-s">tests + spike model</text></g>
+        <g class="d-box"><rect x="720" y="10" width="150" height="62" rx="10"/><text x="795" y="37" class="d-t">This page</text><text x="795" y="56" class="d-s">summary + alerts</text></g>
+        <path d="M150,41 H178" class="d-line" marker-end="url(#arr)"/><path d="M330,41 H358" class="d-line" marker-end="url(#arr)"/>
+        <path d="M510,41 H538" class="d-line" marker-end="url(#arr)"/><path d="M690,41 H718" class="d-line" marker-end="url(#arr)"/>
+        <path d="M255,72 V100 H615 V72" class="d-line d-dash"/>
+        <text x="435" y="122" class="d-s">Parquet lake, one partition per day · CI/CD on GitHub Actions</text>
+      </svg>
+    </div>
     <div class="grid live-grid">
       <div class="card"><div class="stat-label">Last run</div><div class="stat" id="live-date">–</div><div class="muted small" id="live-checks">Loading…</div></div>
       <div class="card"><div class="stat-label">Prices loaded</div><div class="stat" id="live-rows">–</div><div class="muted small">Cardmarket (EUR) + TCGplayer (USD)</div></div>
@@ -37,7 +51,12 @@ layout: default
     </div>
     <div class="grid two">
       <div class="card"><h3>Top cards today</h3><table class="tbl" id="live-cards"><tbody><tr><td class="muted">Loading…</td></tr></tbody></table></div>
-      <div class="card"><h3>Biggest moves vs yesterday</h3><table class="tbl" id="live-movers"><tbody><tr><td class="muted">Loading…</td></tr></tbody></table></div>
+      <div class="card"><h3 id="movers-title">Biggest moves vs previous run</h3><table class="tbl" id="live-movers"><tbody><tr><td class="muted">Loading…</td></tr></tbody></table></div>
+    </div>
+    <div class="card spike-card"><h3>Spike alerts today</h3>
+      <p class="muted small">Flagged when a price sits 3+ standard deviations from its trailing 7-day average, with at least 5 days of history.</p>
+      <table class="tbl" id="live-spikes"><tbody><tr><td class="muted">Loading…</td></tr></tbody></table>
+      <p class="small"><a href="https://leo-data-gig-world.github.io/pokemon-price-pipeline/">Explore the dbt models and lineage →</a></p>
     </div>
   </section>
 
@@ -156,7 +175,7 @@ layout: default
   const base = ["https://raw.githubusercontent.com/leo-data-gig-world/pokemon-price-pipeline/main/lake/_health/",
                 "https://cdn.jsdelivr.net/gh/leo-data-gig-world/pokemon-price-pipeline@main/lake/_health/"];
   const get = async (f) => { for (const b of base) { try { const r = await fetch(b + f, {cache: "no-store"}); if (r.ok) return r.json(); } catch (e) {} } return null; };
-  const [h, sm] = await Promise.all([get("latest.json"), get("summary.json")]);
+  const [h, sm, sp] = await Promise.all([get("latest.json"), get("summary.json"), get("spikes.json")]);
   const $ = (id) => document.getElementById(id);
   const esc = (t) => String(t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
   const usd = (v) => "$" + Number(v).toLocaleString("en-GB", {maximumFractionDigits: 2});
@@ -175,6 +194,13 @@ layout: default
   if (t) { $("live-top").textContent = usd(t.price_usd); $("live-top-name").textContent = t.card + " (" + t.set + ")"; }
   $("live-cards").innerHTML = sm.top_cards.slice(0, 5).map(c =>
     `<tr><td>${esc(c.card)} <span class="muted small">${esc(c.set)}</span></td><td class="num">${usd(c.price_usd)}</td></tr>`).join("");
+  if (sm.compared_to) $("movers-title").textContent = "Biggest moves vs " + new Date(sm.compared_to).toLocaleDateString("en-GB", {day: "numeric", month: "short"});
+  const spikes = (sp && sp.date === h.date) ? sp.spikes : null;
+  $("live-spikes").innerHTML = spikes === null
+    ? `<tr><td class="muted">Spike detection runs with each daily load.</td></tr>`
+    : spikes.length
+      ? spikes.slice(0, 5).map(x => `<tr><td>${esc(x.card_name)} <span class="muted small">${esc(x.set_id)} · ${esc(x.source)}</span></td><td class="num ${x.zscore_7d >= 0 ? "up" : "down"}">z ${x.zscore_7d}</td></tr>`).join("")
+      : `<tr><td class="muted">No spikes today: every price stayed within its normal range.</td></tr>`;
   $("live-movers").innerHTML = sm.movers.length
     ? sm.movers.slice(0, 5).map(m => `<tr><td>${esc(m.card)} <span class="muted small">${esc(m.set)}</span></td><td class="num ${m.change_pct >= 0 ? "up" : "down"}">${m.change_pct > 0 ? "+" : ""}${m.change_pct}%</td></tr>`).join("")
     : `<tr><td class="muted">Day-on-day comparison starts after the second daily run.</td></tr>`;

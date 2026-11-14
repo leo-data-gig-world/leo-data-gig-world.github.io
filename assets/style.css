@@ -82,3 +82,13 @@ footer{padding:40px 0 64px;color:var(--muted);font-size:14px}
 .up{color:#2e9d5b}.down{color:#c2453b}
 .card h3{margin:0 0 6px;font-size:18px}
 @media (max-width:420px){.grid.two{grid-template-columns:1fr}}
+.diagram{margin:20px 0 4px;overflow-x:auto}
+.diagram svg{width:100%;min-width:620px;height:auto;display:block}
+.d-box rect{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
+.d-key rect{stroke:var(--accent)}
+.d-t{font:600 15px system-ui,-apple-system,"Segoe UI",sans-serif;fill:var(--ink);text-anchor:middle}
+.d-s{font:12px system-ui,-apple-system,"Segoe UI",sans-serif;fill:var(--muted);text-anchor:middle}
+.d-line{stroke:var(--muted);stroke-width:1.5;fill:none}
+.d-dash{stroke-dasharray:4 4}
+.d-arrowhead{fill:var(--muted)}
+.spike-card{margin-top:16px}
