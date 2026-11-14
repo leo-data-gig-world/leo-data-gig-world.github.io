@@ -2,6 +2,7 @@
 title: "Symmetric aggregates in LookML: where they protect you, and where they don't"
 description: Looker can de-duplicate fanned-out joins for you, but only under conditions most models quietly break. How it works, four ways it fails, and a review checklist.
 tags: [LookML, data modelling]
+redirect_from: /blog/2026/11/lookml-fanout/
 ---
 
 Every LookML developer learns early that joins can fan out: join merchants onto transactions, and each merchant row repeats once per transaction. The usual answer is "Looker handles it with symmetric aggregates". That's true, but only under conditions that many real models quietly break.

@@ -13,7 +13,7 @@ description: Practical writing on analytics engineering, data platforms and LLM 
   {% if site.posts.size == 0 %}<p class="muted">First posts coming soon.</p>{% endif %}
   {% for post in site.posts %}
     <a class="postrow" href="{{ post.url | relative_url }}">
-      <span class="when">{{ post.date | date: "%-d %b %Y" }}</span>
+      <span class="when">{% if post.show_date %}{{ post.date | date: "%-d %b %Y" }}{% else %}{{ post.tags | first }}{% endif %}</span>
       <span><strong>{{ post.title }}</strong><br><span class="muted">{{ post.description }}</span></span>
     </a>
   {% endfor %}
