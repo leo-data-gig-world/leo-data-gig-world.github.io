@@ -1,0 +1,21 @@
+---
+layout: default
+title: Blog
+description: Notes on what I'm learning and building in data engineering, analytics engineering and LLMs.
+---
+<header><div class="wrap">
+  <div class="eyebrow">Blog</div>
+  <h1>Notes from the build</h1>
+  <p class="lead">What I'm learning and building in data and AI: short, practical, with real examples.</p>
+</div></header>
+<main class="wrap">
+  <section>
+  {% if site.posts.size == 0 %}<p class="muted">First posts coming soon.</p>{% endif %}
+  {% for post in site.posts %}
+    <a class="postrow" href="{{ post.url | relative_url }}">
+      <span class="when">{{ post.date | date: "%-d %b %Y" }}</span>
+      <span><strong>{{ post.title }}</strong><br><span class="muted">{{ post.description }}</span></span>
+    </a>
+  {% endfor %}
+  </section>
+</main>

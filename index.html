@@ -1,0 +1,182 @@
+---
+layout: default
+---
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Analytics Engineer · UK</div>
+    <h1>Hi, I'm Leo.</h1>
+    <p class="lead">I turn messy payment data into tested, trusted models that people make decisions on, and I build with LLMs. Six years in data, the last three in payments.</p>
+    <p class="pill" id="live-pill"><span class="dot"></span><span>Checking my live pipeline…</span></p>
+    <div class="btns">
+      <a class="btn primary" href="https://www.linkedin.com/in/man-hin-wong-8ba393147">LinkedIn</a>
+      <a class="btn" href="https://github.com/leo-data-gig-world">GitHub</a>
+      <a class="btn" href="#projects">Projects</a>
+      <a class="btn" href="/blog/">Blog</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section>
+    <h2>What I do</h2>
+    <div class="grid">
+      <div class="card"><h3>Analytics engineering</h3><p>dbt models on BigQuery for payment transaction monitoring, with unit and data tests gating every change in CI.</p></div>
+      <div class="card"><h3>Data platforms</h3><p>As the only technical data person in a team, I built the whole stack: Python pipelines, layered SQL models and star schemas over 100M+ payment records.</p></div>
+      <div class="card"><h3>LLM systems</h3><p>Agent workflows that read, group and report on tickets at work, and multi-agent apps with their own memory at home.</p></div>
+    </div>
+  </section>
+
+  <section id="live">
+    <h2>Live from my pipeline</h2>
+    <p class="muted">Every morning an Airflow DAG pulls ~2,000 Pokémon card prices, checks the data and publishes this summary.
+      <a href="https://github.com/leo-data-gig-world/pokemon-price-pipeline">See the code →</a></p>
+    <div class="grid live-grid">
+      <div class="card"><div class="stat-label">Last run</div><div class="stat" id="live-date">–</div><div class="muted small" id="live-checks">Loading…</div></div>
+      <div class="card"><div class="stat-label">Prices loaded</div><div class="stat" id="live-rows">–</div><div class="muted small">Cardmarket (EUR) + TCGplayer (USD)</div></div>
+      <div class="card"><div class="stat-label">Priciest card today</div><div class="stat" id="live-top">–</div><div class="muted small" id="live-top-name"></div></div>
+    </div>
+    <div class="grid two">
+      <div class="card"><h3>Top cards today</h3><table class="tbl" id="live-cards"><tbody><tr><td class="muted">Loading…</td></tr></tbody></table></div>
+      <div class="card"><h3>Biggest moves vs yesterday</h3><table class="tbl" id="live-movers"><tbody><tr><td class="muted">Loading…</td></tr></tbody></table></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Now</h2>
+    <div class="grid two">
+      <div class="card"><h3>Building</h3><p>A daily price pipeline: Airflow 3, a Parquet lake partitioned by date, data quality gates and alerts. Next: dbt models and spike detection.</p></div>
+      <div class="card"><h3>Writing</h3>{% for post in site.posts limit:2 %}<p><a href="{{ post.url | relative_url }}">{{ post.title }}</a></p>{% endfor %}<p><a href="{{ '/blog/' | relative_url }}">All posts →</a></p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>What I've worked on</h2>
+    <div class="job">
+      <div class="when">Now</div>
+      <div>
+        <h3>Transaction monitoring in payments</h3>
+        <ul>
+          <li>dbt models and SQL behind transaction monitoring and fraud detection, over tens of millions of transactions a day.</li>
+          <li>Tuned fraud rules with grid search, link analysis and statistical modelling: alert precision up 10x.</li>
+          <li>Built an LLM agent workflow that reads and groups compliance tickets, drafts reports and updates status. The team now keeps up with thousands of tickets a week.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="job">
+      <div class="when">Before</div>
+      <div>
+        <h3>Building a data platform from scratch</h3>
+        <ul>
+          <li>The only technical data person in an analytics team: Python ETL, layered SQL models (staging, intermediate, marts) and Power BI for leadership and compliance.</li>
+          <li>Star schemas over 100M+ payment records for customer behaviour, risk monitoring and regulatory reporting.</li>
+          <li>Data quality checks at every stage: schema validation, nulls, anomaly alerts and reconciliation between sources.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="job">
+      <div class="when">Earlier</div>
+      <div>
+        <h3>Marketing analytics</h3>
+        <ul>
+          <li>SQL marketing pipelines, funnel and attribution tracking, and Looker and Tableau dashboards.</li>
+          <li>Automated monthly reporting that cut preparation time by 60%.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="grid">
+      <div class="card proj">
+        <h3>Pokémon card price pipeline</h3>
+        <p>A real daily pipeline: Airflow 3 DAG with retries and alerts, a date-partitioned Parquet lake, data quality gates, and CI/CD on GitHub Actions. It feeds the live section above.</p>
+        <div class="tags"><span class="tag">Airflow</span><span class="tag">Parquet</span><span class="tag">Data quality</span><span class="tag">CI/CD</span></div>
+        <a class="more" href="https://github.com/leo-data-gig-world/pokemon-price-pipeline">View code →</a>
+      </div>
+      <div class="card proj">
+        <h3>dbt + LookML portfolio</h3>
+        <p>A runnable analytics stack on DuckDB: layered dbt models, tests, snapshots, CI, and LookML dashboards as code. Clone it and run <code>dbt build</code>.</p>
+        <div class="tags"><span class="tag">dbt</span><span class="tag">LookML</span><span class="tag">DuckDB</span><span class="tag">CI</span></div>
+        <a class="more" href="https://github.com/leo-data-gig-world/dbt-lookml-portfolio">View code →</a>
+      </div>
+      <div class="card proj">
+        <h3>Agent Skills</h3>
+        <p>LLM agents that classify text and notice when a new category appears. A second agent promotes new topics once they show up often enough.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">LLM agents</span><span class="tag">Pydantic</span></div>
+        <a class="more" href="https://github.com/leo-data-gig-world/agent_skills">View code →</a>
+      </div>
+      <div class="card proj">
+        <h3>Call of Cthulhu AI Runner</h3>
+        <p>A tabletop RPG engine run by LLMs: an AI game master, turn-based AI party members and rule-based skill checks, in English, Traditional Chinese and Cantonese.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">Gemini</span><span class="tag">Ollama</span></div>
+        <a class="more" href="https://github.com/leo-data-gig-world/Coc_AI_Runner">View code →</a>
+      </div>
+      <div class="card proj">
+        <h3>Movie Sentinel</h3>
+        <p>Movie review classification with automatic topic discovery using an LLM.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">LLM</span></div>
+        <a class="more" href="https://github.com/leo-data-gig-world/Movie_Sentinel">View code →</a>
+      </div>
+      <div class="card proj">
+        <h3>Illegal mining detection</h3>
+        <p>MSc dissertation: object detection of illegal mining sites in Sentinel-2 satellite images.</p>
+        <div class="tags"><span class="tag">Deep learning</span><span class="tag">Remote sensing</span></div>
+        <a class="more" href="https://github.com/leo-data-gig-world/Detecting-illegal-mining-with-sentinel-2-images">View code →</a>
+      </div>
+      <div class="card proj">
+        <h3>AI Novelist</h3>
+        <p>A multi-agent writing app with persistent memory of characters, places and plot, fed back into every prompt. Works with any model, in three languages.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">Streamlit</span><span class="tag">Multi-agent</span></div>
+        <span class="tag" style="align-self:flex-start">Code private · demo on request</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Toolbox</h2>
+    <div class="chips">
+      <span class="chip key">SQL</span><span class="chip key">dbt</span><span class="chip key">BigQuery</span><span class="chip key">Python</span><span class="chip key">Git &amp; CI</span>
+      <span class="chip">Looker / LookML</span><span class="chip">Looker Studio</span><span class="chip">Power BI</span><span class="chip">PostgreSQL</span><span class="chip">DuckDB</span><span class="chip">Azure</span>
+      <span class="chip">Data modelling</span><span class="chip">Data quality</span><span class="chip">A/B testing</span><span class="chip">LLM APIs</span><span class="chip">Ollama</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Education</h2>
+    <div class="grid">
+      <div class="card"><h3>MSc Data Analytics</h3><p>Distinction · 2022</p></div>
+      <div class="card"><h3>BBA (Hons) Business Administration</h3><p>2014</p></div>
+    </div>
+  </section>
+</main>
+
+<script>
+(async () => {
+  const base = ["https://raw.githubusercontent.com/leo-data-gig-world/pokemon-price-pipeline/main/lake/_health/",
+                "https://cdn.jsdelivr.net/gh/leo-data-gig-world/pokemon-price-pipeline@main/lake/_health/"];
+  const get = async (f) => { for (const b of base) { try { const r = await fetch(b + f, {cache: "no-store"}); if (r.ok) return r.json(); } catch (e) {} } return null; };
+  const [h, sm] = await Promise.all([get("latest.json"), get("summary.json")]);
+  const $ = (id) => document.getElementById(id);
+  const esc = (t) => String(t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const usd = (v) => "$" + Number(v).toLocaleString("en-GB", {maximumFractionDigits: 2});
+  const pill = $("live-pill");
+  if (!h) { pill.querySelector("span:last-child").textContent = "Live pipeline data unavailable right now"; return; }
+  const n = Object.values(h.checks).filter(Boolean).length, total = Object.keys(h.checks).length;
+  const days = Math.floor((Date.now() - new Date(h.date + "T00:00:00Z")) / 864e5);
+  pill.classList.add(h.passed && days <= 2 ? "ok" : "warn");
+  pill.querySelector("span:last-child").textContent =
+    (h.passed ? "Pipeline healthy" : "Pipeline check failed") + " · last run " + (days === 0 ? "today" : days === 1 ? "yesterday" : days + " days ago");
+  $("live-date").textContent = new Date(h.date).toLocaleDateString("en-GB", {day: "numeric", month: "short"});
+  $("live-checks").textContent = n + "/" + total + " quality checks passed";
+  $("live-rows").textContent = h.rows.toLocaleString("en-GB");
+  if (!sm) return;
+  const t = sm.top_cards[0];
+  if (t) { $("live-top").textContent = usd(t.price_usd); $("live-top-name").textContent = t.card + " (" + t.set + ")"; }
+  $("live-cards").innerHTML = sm.top_cards.slice(0, 5).map(c =>
+    `<tr><td>${esc(c.card)} <span class="muted small">${esc(c.set)}</span></td><td class="num">${usd(c.price_usd)}</td></tr>`).join("");
+  $("live-movers").innerHTML = sm.movers.length
+    ? sm.movers.slice(0, 5).map(m => `<tr><td>${esc(m.card)} <span class="muted small">${esc(m.set)}</span></td><td class="num ${m.change_pct >= 0 ? "up" : "down"}">${m.change_pct > 0 ? "+" : ""}${m.change_pct}%</td></tr>`).join("")
+    : `<tr><td class="muted">Day-on-day comparison starts after the second daily run.</td></tr>`;
+})();
+</script>

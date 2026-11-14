@@ -1,0 +1,6 @@
+title: Leo Wong
+description: Analytics engineer in the UK. dbt, BigQuery, SQL, Python, payments and fraud data, LLM systems.
+url: https://leo-data-gig-world.github.io
+permalink: /blog/:year/:month/:title/
+markdown: kramdown
+exclude: [README.md]
