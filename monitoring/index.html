@@ -1,0 +1,52 @@
+---
+layout: default
+title: Pipeline monitoring
+description: Live run health for my daily card-price pipeline - run history, data volume, freshness, dbt tests, run time and a price watchlist.
+---
+<header><div class="wrap">
+  <div class="eyebrow">Monitoring</div>
+  <h1>Pipeline health</h1>
+  <p class="lead">Live from my <a href="https://github.com/leo-data-gig-world/pokemon-price-pipeline">daily price pipeline</a>.
+    Every run records each stage's timing and result, failed runs included, and this page reads that history.</p>
+  <p class="pill" id="mon-pill"><span class="dot"></span><span>Loading run history…</span></p>
+</div></header>
+
+<main class="wrap viz-root" id="mon">
+  <section>
+    <div class="grid kpis">
+      <div class="card"><div class="stat-label">Last run</div><div class="stat" id="k-last">–</div><div class="muted small" id="k-last-sub"></div></div>
+      <div class="card"><div class="stat-label">Success rate</div><div class="stat" id="k-rate">–</div><div class="muted small" id="k-rate-sub"></div></div>
+      <div class="card"><div class="stat-label">Days monitored</div><div class="stat" id="k-days">–</div><div class="muted small">since the first run</div></div>
+      <div class="card"><div class="stat-label">Average run time</div><div class="stat" id="k-time">–</div><div class="muted small">extract + checks + dbt + publish</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Run history</h2>
+    <div class="card"><div id="c-calendar" class="calendar"></div>
+      <div class="legend" aria-hidden="false">
+        <span><i class="sw st-passed">✓</i>Passed</span><span><i class="sw st-failed">✕</i>Failed</span>
+        <span><i class="sw st-missed">–</i>No run</span><span><i class="sw st-pending">·</i>Today, not run yet</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Data and quality</h2>
+    <div class="grid two">
+      <figure class="card chart"><figcaption><h3>Rows loaded per run</h3><p class="muted small">Prices across both marketplaces</p></figcaption><div id="c-rows"></div></figure>
+      <figure class="card chart"><figcaption><h3>Source freshness</h3><p class="muted small">Hours since the marketplaces last refreshed prices (limit 48h)</p></figcaption><div id="c-fresh"></div></figure>
+      <figure class="card chart"><figcaption><h3>dbt tests per run</h3><p class="muted small">Data tests and unit tests</p></figcaption><div id="c-tests"></div></figure>
+      <figure class="card chart"><figcaption><h3>Run time by stage</h3><p class="muted small">Seconds</p></figcaption><div id="c-time"></div></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>Price watchlist</h2>
+    <p class="muted">Today's five most expensive cards on TCGplayer, tracked across every run (USD).</p>
+    <div class="grid multiples" id="c-watch"></div>
+  </section>
+</main>
+
+<div id="tip" class="tip" role="status" hidden></div>
+<script src="{{ '/assets/monitor.js' | relative_url }}"></script>
