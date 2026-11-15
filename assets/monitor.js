@@ -79,7 +79,12 @@
 
   // ---- generic SVG charts ---------------------------------------------------
   const svgEl = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent && parent.appendChild(e); return e; };
-  const niceMax = (v) => { if (!(v > 0)) return 1; const p = 10 ** Math.floor(Math.log10(v)); const n = v / p; return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10) * p; };
+  // Axis top = 4 clean steps (1, 2, 2.5, 5 x 10^n), so ticks read 0 / 1,000 / 2,000 ...
+  const niceMax = (v) => {
+    if (!(v > 0)) return 4;
+    const raw = v / 4, p = 10 ** Math.floor(Math.log10(raw)), n = raw / p;
+    return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10) * p * 4;
+  };
   const tableView = (host, head, rows) => {
     const det = document.createElement("details"); det.className = "datatable";
     det.innerHTML = `<summary>Data table</summary><table><thead><tr>${head.map((h) => `<th>${esc(h)}</th>`).join("")}</tr></thead>` +
