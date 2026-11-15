@@ -49,4 +49,4 @@ description: Live run health for my daily card-price pipeline - run history, dat
 </main>
 
 <div id="tip" class="tip" role="status" hidden></div>
-<script src="{{ '/assets/monitor.js' | relative_url }}"></script>
+<script src="{{ '/assets/monitor.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
